@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="calculator-container">
+      <h1 id="output"></h1>
+      <div class="buttons-container">
+        <button class="button grey-button" value="AC">AC</button>
+        <button class="button grey-button" value="a">+/-</button>
+        <button class="button grey-button" value="%">%</button>
+        <button class="button orange" value="/">/</button>
+        <button class="button" value="7">7</button>
+        <button class="button" value="8">8</button>
+        <button class="button" value="9">9</button>
+        <button class="button orange" value="x">x</button>
+        <button class="button" value="4">4</button>
+        <button class="button" value="5">5</button>
+        <button class="button" value="6">6</button>
+        <button class="button orange" value="-">-</button>
+        <button class="button" value="1">1</button>
+        <button class="button" value="2">2</button>
+        <button class="button" value="3">3</button>
+        <button class="button orange" value="+">+</button>
+        <button class="button button0" value="0">0</button>
+        <button class="button" value=".">.</button>
+        <button class="button orange" value="=">=</button>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const output = document.getElementById("output");
+        const buttons = document.querySelectorAll(".button");
+        let currentInput = "";
+        let currentOperator = "";
+        let firstOperand = "";
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const value = button.value;
+
+            if ((value >= "0" && value <= "9") || value === ".") {
+              currentInput += value;
+              output.textContent = currentInput;
+            } else if (value === "AC") {
+              currentInput = "";
+              currentOperator = "";
+              firstOperand = "";
+              output.textContent = "0";
+            } else if (value === "a") {
+              currentInput = currentInput.startsWith("-")
+                ? currentInput.slice(1)
+                : "-" + currentInput;
+              output.textContent = currentInput;
+            } else if (value === "%") {
+              currentInput = parseFloat(currentInput) / 100;
+              output.textContent = currentInput;
+            } else if (["+", "-", "x", "/"].includes(value)) {
+              currentOperator = value;
+              firstOperand = currentInput;
+              currentInput = "";
+            } else if (value === "=") {
+              const num1 = parseFloat(firstOperand);
+              const num2 = parseFloat(currentInput);
+
+              switch (currentOperator) {
+                case "+":
+                  currentInput = num1 + num2;
+                  break;
+                case "-":
+                  currentInput = num1 - num2;
+                  break;
+                case "x":
+                  currentInput = num1 * num2;
+                  break;
+                case "/":
+                  currentInput = num1 / num2;
+                  break;
+              }
+
+              output.textContent = currentInput;
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
